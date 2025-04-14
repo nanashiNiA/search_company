@@ -6,19 +6,21 @@ import json # JSONパースのために追加
 from dotenv import load_dotenv # .env読み込みのために追加
 import google.generativeai as genai # Gemini APIのために追加
 
-# src/utils ディレクトリをPythonパスに追加して config_loader をインポート
-# (実行場所によってパスの解決方法が変わるため、堅牢な方法を選択)
-current_dir = os.path.dirname(os.path.abspath(__file__))
-utils_dir = os.path.join(current_dir, '..', 'utils')
-if utils_dir not in sys.path:
-    sys.path.append(utils_dir)
+# src/utils ディレクトリをPythonパスに追加する代わりに相対インポートを使用
+# current_dir = os.path.dirname(os.path.abspath(__file__))
+# utils_dir = os.path.join(current_dir, '..', 'utils')
+# if utils_dir not in sys.path:
+#     sys.path.append(utils_dir)
 
 try:
-    from config_loader import load_config
-    # gemini_client もインポート
-    from gemini_client import initialize_gemini
+    # 相対インポートに変更
+    from ..utils.config_loader import load_config
+    from ..utils.gemini_client import initialize_gemini
 except ImportError as e:
     print(f"Error: Could not import required utility modules: {e}")
+    # 実行場所によっては 'attempted relative import beyond top-level package' エラーが出る可能性あり
+    # その場合は `python -m src.collector.website_scraper` のようにモジュールとして実行する必要がある
+    print("Hint: Try running the script as a module, e.g., 'python -m src.collector.website_scraper'")
     sys.exit(1)
 
 
