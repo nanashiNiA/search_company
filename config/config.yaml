@@ -1,0 +1,89 @@
+# --- General Settings ---
+output_format: "excel"  # "excel" or "google_sheets"
+output_file_path: "data/processed/events.xlsx" # Path for Excel output
+# google_sheet_id: "YOUR_GOOGLE_SHEET_ID_HERE" # Google Sheet ID (if output_format is google_sheets)
+# google_sheet_worksheet_name: "Sheet1"        # Target worksheet name
+
+# --- Data Collection Settings ---
+# List of websites or sources to scrape/query
+target_sources:
+  - name: "Example Tech News Site"
+    url: "https://example.com/tech-events"
+    type: "website_scrape" # Identifier for the type of collector to use
+    # Additional parameters for this source, e.g., specific CSS selectors
+    # selectors: # selectors はAI抽出では不要なのでコメントアウト
+    #   event_item: ".event-listing"
+    #   title: ".event-title a"
+    #   link: ".event-title a[href]"
+    #   date: ".event-date"
+    #   location: ".event-location"
+
+  # - name: "Another Event Portal"
+  #   url: "https://anotherexample.org/api/v1/events"
+  #   type: "api_call"
+  #   api_key_env: "ANOTHER_API_KEY" # Name of the environment variable holding the key
+
+# --- Gemini API Settings ---
+gemini_model: "gemini-1.5-flash" # Or another appropriate model
+
+# New prompt for extracting structured data directly from HTML
+html_extraction_prompt_template: |
+  以下のHTMLコンテンツから、企業イベントに関する情報を抽出し、JSON形式のリストで返してください。
+  各イベントについて、可能な限り以下の項目を抽出してください:
+  [企業名, イベント名, 開催日時テキスト(例: "2024年8月15日(木) 14:00～16:00"), 場所種別(オンライン/オフライン/ハイブリッド), 場所詳細(会場名やURL), 概要, 公式サイトURL, 参加費用テキスト, 申込締切テキスト]
+  項目が見つからない場合は null または空文字列としてください。日付や時刻はHTML内のテキスト表現のまま抽出してください。
+
+  HTMLコンテンツ:
+  ---
+  {html_content}
+  ---
+
+  JSON出力 (イベント情報のリスト):
+
+# Existing prompt for extracting from pre-processed text (keep for potential future use or other modules)
+extraction_prompt_template: |
+  以下のイベント情報テキストから、指定された項目をJSON形式で抽出してください。
+  項目: [企業名, イベント名, 開催開始日時, 開催終了日時, 場所種別(オンライン/オフライン), 場所詳細, 概要, 公式サイトURL, 参加費用, 申込締切]
+  存在しない項目は null または空文字列にしてください。
+  日付/時刻は YYYY-MM-DD HH:MM 形式を基本としますが、不明な場合はテキストのまま記述してください。
+
+  テキスト:
+  ---
+  {event_text}
+  ---
+
+  JSON出力:
+
+summary_prompt_template: |
+  以下のイベント概要を100文字程度の簡潔な日本語で要約してください。
+
+  概要:
+  ---
+  {event_description}
+  ---
+
+  要約:
+
+category_prompt_template: |
+  以下のイベント情報から、最も適切と思われるカテゴリを一つ選んでください。
+  カテゴリ候補: [セミナー, 展示会, 交流会, 記者発表会, カンファレンス, その他]
+
+  イベント情報:
+  ---
+  タイトル: {event_title}
+  概要: {event_description}
+  ---
+
+  カテゴリ:
+
+# Safety settings for Gemini API (adjust as needed)
+# See: https://ai.google.dev/docs/safety_setting_gemini
+safety_settings:
+  HARASSMENT: BLOCK_MEDIUM_AND_ABOVE
+  HATE_SPEECH: BLOCK_MEDIUM_AND_ABOVE
+  SEXUALLY_EXPLICIT: BLOCK_MEDIUM_AND_ABOVE
+  DANGEROUS_CONTENT: BLOCK_MEDIUM_AND_ABOVE
+
+# --- Logging Settings ---
+log_level: "INFO" # DEBUG, INFO, WARNING, ERROR, CRITICAL
+log_file: "logs/app.log" # Set to null or omit to log only to console

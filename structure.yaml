@@ -1,0 +1,46 @@
+# プロジェクトルートディレクトリ
+.
+├── .gitignore          # Gitでバージョン管理しないファイル/ディレクトリを指定
+├── README.md           # プロジェクトの概要、セットアップ手順などを記載
+├── requirements.txt    # Pythonの依存ライブラリリスト
+├── structure.yaml      # このファイル (ディレクトリ構造定義)
+├── config/             # 設定ファイル用ディレクトリ
+│   ├── config.yaml     # 一般的な設定 (情報収集対象URL、出力ファイル名など)
+│   └── .env.example    # 環境変数設定ファイルの例 (APIキーなど)。実ファイル.envは.gitignoreに記載
+├── data/               # (任意)収集した生データや中間生成物を保存するディレクトリ
+│   └── raw/            # スクレイピング結果など
+│   └── processed/      # 整形後のデータ
+├── docs/               # ドキュメント用ディレクトリ
+│   └── plan.md         # プロジェクト計画書 (作成済み)
+├── src/                # ソースコードディレクトリ
+│   ├── __init__.py
+│   ├── collector/      # データ収集関連モジュール
+│   │   ├── __init__.py
+│   │   ├── base_collector.py # 収集クラスの基底クラス (任意)
+│   │   ├── website_scraper.py # 特定サイト用スクレイパー
+│   │   └── api_client.py    # APIクライアント
+│   ├── gemini/         # Gemini API連携モジュール
+│   │   ├── __init__.py
+│   │   └── client.py      # Gemini APIとのやり取りを行うクライアント
+│   │   └── prompts.py     # Gemini APIに送るプロンプトテンプレート (任意)
+│   ├── processor/      # データ整形・処理モジュール
+│   │   ├── __init__.py
+│   │   └── formatter.py   # データを定義した形式に整形
+│   │   └── validator.py   # データのバリデーション (任意)
+│   ├── exporter/       # データ出力モジュール
+│   │   ├── __init__.py
+│   │   ├── base_exporter.py # 出力クラスの基底クラス (任意)
+│   │   ├── sheets_exporter.py # Google Sheetsへの出力
+│   │   └── excel_exporter.py  # Excelファイルへの出力
+│   ├── utils/            # 共通ユーティリティモジュール
+│   │   ├── __init__.py
+│   │   ├── config_loader.py # 設定ファイル読み込み
+│   │   └── logging_config.py # ロギング設定
+│   └── main.py           # プログラム実行のエントリーポイント
+└── tests/              # テストコード用ディレクトリ
+    ├── __init__.py
+    ├── test_collector.py
+    ├── test_gemini.py
+    ├── test_processor.py
+    ├── test_exporter.py
+    └── test_utils.py

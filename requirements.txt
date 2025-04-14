@@ -1,0 +1,21 @@
+# Core libraries
+requests>=2.28.0,<3.0.0        # For making HTTP requests
+beautifulsoup4>=4.10.0,<5.0.0  # For parsing HTML/XML (Web Scraping)
+google-generativeai>=0.4.0,<0.5.0 # For Gemini API access
+python-dotenv>=0.20.0,<1.0.0    # For loading environment variables from .env file
+
+# Google Sheets access (Choose one or both if needed)
+google-api-python-client>=2.50.0,<3.0.0
+google-auth-httplib2>=0.1.0,<0.2.0
+google-auth-oauthlib>=0.5.0,<0.6.0
+gspread>=5.5.0,<6.0.0            # Easier interface for Google Sheets
+
+# Excel file manipulation (Choose one or both if needed)
+openpyxl>=3.0.10,<4.0.0         # For reading/writing .xlsx files
+pandas>=1.4.0,<2.0.0            # Optional: For data manipulation and easy Excel I/O
+
+# Optional: For more advanced scraping
+# scrapy>=2.6.0,<3.0.0
+
+# Optional: Configuration file parsing (if using YAML)
+# pyyaml>=6.0,<7.0
