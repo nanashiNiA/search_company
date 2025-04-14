@@ -63,8 +63,8 @@
 3.  **ターゲットURLの指定:** `config/config.yaml` 内の `target_sources` リストにある収集したいサイトの `url` を、実際にイベント情報が掲載されているページのURLに変更します。
     ```yaml
     target_sources:
-      - name: "実際のイベントサイト名" # 分かりやすい名前に変更
-        url: "https://actual-event-site.com/events" # ここを実際のURLに
+      - name: "Tech Conference Site"
+        url: "https://techconference.com/upcoming-events"
         type: "website_scrape"
     ```
 

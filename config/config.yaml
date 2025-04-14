@@ -11,7 +11,7 @@ target_sources:
     url: "https://example.com/tech-events"
     type: "website_scrape" # Identifier for the type of collector to use
     # Additional parameters for this source, e.g., specific CSS selectors
-    # selectors: # selectors はAI抽出では不要なのでコメントアウト
+    # selectors: # selectors はAI抽出では不要なのでコメントアウト or 削除
     #   event_item: ".event-listing"
     #   title: ".event-title a"
     #   link: ".event-title a[href]"
@@ -22,6 +22,16 @@ target_sources:
   #   url: "https://anotherexample.org/api/v1/events"
   #   type: "api_call"
   #   api_key_env: "ANOTHER_API_KEY" # Name of the environment variable holding the key
+
+  # 検索API用の設定例を追加
+  - name: "Tech Events Search"
+    query: "upcoming tech conferences 2024"
+    type: "search_api"  # 検索APIを使用する種別
+
+# --- Search API Settings --- (NEW)
+search_api:
+  engine: "google"  # 使用する検索エンジン
+  results_count: 5  # 取得する検索結果数
 
 # --- Gemini API Settings ---
 gemini_model: "gemini-1.5-flash" # Or another appropriate model
@@ -87,3 +97,23 @@ safety_settings:
 # --- Logging Settings ---
 log_level: "INFO" # DEBUG, INFO, WARNING, ERROR, CRITICAL
 log_file: "logs/app.log" # Set to null or omit to log only to console
+
+# 検索結果からイベント情報を抽出するプロンプト (NEW)
+search_extraction_prompt_template: |
+  以下は検索結果のJSONです:
+
+  {search_results}
+
+  上記の検索結果から、イベント情報を抽出し、以下の形式のJSONリストとして返してください:
+
+  [
+    {
+      "event_name": "イベント名",
+      "date": "開催日（YYYY-MM-DD形式、または原文のまま）",
+      "location": "開催場所",
+      "description": "簡単な説明",
+      "url": "イベントのURL"
+    }
+  ]
+
+  結果はJSONリストのみを返してください。

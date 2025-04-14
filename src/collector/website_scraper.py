@@ -7,15 +7,15 @@ from dotenv import load_dotenv # .env読み込みのために追加
 import google.generativeai as genai # Gemini APIのために追加
 
 # src/utils ディレクトリをPythonパスに追加する代わりに相対インポートを使用
-# current_dir = os.path.dirname(os.path.abspath(__file__))
-# utils_dir = os.path.join(current_dir, '..', 'utils')
-# if utils_dir not in sys.path:
-#     sys.path.append(utils_dir)
+current_dir = os.path.dirname(os.path.abspath(__file__))
+utils_dir = os.path.join(current_dir, '..', 'utils')
+if utils_dir not in sys.path:
+    sys.path.append(utils_dir)
 
 try:
-    # 相対インポートに変更
-    from ..utils.config_loader import load_config
-    from ..utils.gemini_client import initialize_gemini
+    # 絶対インポートに変更
+    from src.utils.config_loader import load_config
+    from src.utils.gemini_client import initialize_gemini
 except ImportError as e:
     print(f"Error: Could not import required utility modules: {e}")
     # 実行場所によっては 'attempted relative import beyond top-level package' エラーが出る可能性あり
